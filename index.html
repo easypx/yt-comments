@@ -109,6 +109,30 @@
             }
         }
 
+        // Funktion zum Löschen von Kommentaren
+        function deleteComments(accessToken) {
+            
+            const commentId = prompt("Gib die Kommentar ID ein:");// Gib die ID des Kommentars an
+
+            fetch(`https://www.googleapis.com/youtube/v3/comments?id=${commentId}`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`API-Fehler: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    displayComments(data);
+                    console.log("Kommentar gelöscht!");
+                })
+                .catch(error => console.error('Fehler bei API-Aufruf:', error));
+        }
+
         // Generiere einen zufälligen State-Wert
         function generateCryptoRandomState() {
             const randomValues = new Uint8Array(16); // 16 zufällige Bytes
