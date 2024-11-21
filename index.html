@@ -1,65 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube API Test</title>
+    <title>YouTube API OAuth2 Example</title>
 </head>
-
 <body>
-    <button onclick="oauth2SignIn()">Login mit Google</button>
-
+    <button id="loginButton">Login mit Google</button>
+    <div id="output"></div>
     <script>
-        const YOUR_CLIENT_ID = '494753670710-1bdnjbifije3cckvbmm29lv9n9okh9qt.apps.googleusercontent.com';
-        const YOUR_REDIRECT_URI = 'https://easypx.github.io/yt-comments';
-        const YOUR_VIDEO_ID = 'yPJuVLc5Jk4';
+        const YOUR_CLIENT_ID = '494753670710-1bdnjbifije3cckvbmm29lv9n9okh9qt.apps.googleusercontent.com'; // Ersetze durch deine Client-ID
+        const YOUR_REDIRECT_URI = window.location.origin; // Aktuelle Seite als Redirect-URI
+        const YOUR_VIDEO_ID = 'yPJuVLc5Jk4'; // Ersetze durch die Video-ID, von der du Kommentare abrufen möchtest
 
+        // Funktion für den Login und die OAuth2-Umleitung
         function oauth2SignIn() {
             const oauth2Endpoint = 'https://accounts.google.com/o/oauth2/v2/auth';
 
+            // Generiere einen zufälligen State-Wert, um CSRF zu verhindern
             const state = generateCryptoRandomState();
             localStorage.setItem('state', state);
 
+            // OAuth2-Parameter
             const params = {
                 client_id: YOUR_CLIENT_ID,
-                redirect_uri: YOUR_REDIRECT_URI, // Muss mit den OAuth-Einstellungen übereinstimmen
+                redirect_uri: YOUR_REDIRECT_URI,
                 response_type: 'token',
                 scope: 'https://www.googleapis.com/auth/youtube.force-ssl',
                 state: state,
                 include_granted_scopes: 'true',
             };
 
+            // Konstruiere die Auth-URL
             const queryString = new URLSearchParams(params).toString();
             const authUrl = `${oauth2Endpoint}?${queryString}`;
 
+            // Umleitung zur Google-Anmeldeseite
             window.location.href = authUrl;
         }
+
+        // Funktion zum Verarbeiten der Redirect-Daten
         function handleRedirect() {
-            const fragment = window.location.hash.substring(1); // Entfernt das `#`
+            const fragment = window.location.hash.substring(1); // Entfernt das `#` aus der URL
             const params = new URLSearchParams(fragment);
 
             if (params.has('access_token')) {
                 const accessToken = params.get('access_token');
                 const state = params.get('state');
 
-                // Überprüfe den State auf mögliche CSRF-Angriffe
+                // Überprüfe den State zur Vermeidung von CSRF-Angriffen
                 if (state !== localStorage.getItem('state')) {
-                    console.error('State mismatch, CSRF attack detected!');
+                    console.error('State mismatch! CSRF attack detected.');
                     return;
                 }
 
-                // Speichere den Token im LocalStorage oder direkt im Speicher
+                // Speichere den Access Token im LocalStorage
                 localStorage.setItem('access_token', accessToken);
                 console.log('Access Token gespeichert:', accessToken);
 
-                // Entferne den Fragment-Teil aus der URL nach dem Login
+                // Entferne den Fragment-Teil aus der URL
                 window.location.hash = '';
 
                 // Rufe die YouTube API auf
                 fetchComments(accessToken);
             }
         }
+
+        // Funktion zum Abrufen von Kommentaren
         function fetchComments(accessToken) {
             const videoId = YOUR_VIDEO_ID; // Gib die ID des Videos an
 
@@ -69,15 +76,49 @@
                     'Content-Type': 'application/json',
                 },
             })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`API-Fehler: ${response.status}`);
+                    }
+                    return response.json();
+                })
                 .then(data => {
-                    console.log('Kommentare:', data);
+                    displayComments(data);
                 })
                 .catch(error => console.error('Fehler bei API-Aufruf:', error));
         }
-        window.onload = handleRedirect;
 
+        // Funktion zum Anzeigen der Kommentare
+        function displayComments(data) {
+            const output = document.getElementById('output');
+            output.innerHTML = ''; // Vorherigen Inhalt löschen
+
+            if (data.items) {
+                data.items.forEach(item => {
+                    const comment = item.snippet.topLevelComment.snippet.textDisplay;
+                    const author = item.snippet.topLevelComment.snippet.authorDisplayName;
+
+                    const commentDiv = document.createElement('div');
+                    commentDiv.innerHTML = `<p><strong>${author}:</strong> ${comment}</p>`;
+                    output.appendChild(commentDiv);
+                });
+            } else {
+                output.textContent = 'Keine Kommentare gefunden.';
+            }
+        }
+
+        // Generiere einen zufälligen State-Wert
+        function generateCryptoRandomState() {
+            const randomValues = new Uint8Array(16); // 16 zufällige Bytes
+            window.crypto.getRandomValues(randomValues);
+            return Array.from(randomValues, byte => byte.toString(16).padStart(2, '0')).join('');
+        }
+
+        // Ereignislistener für den Login-Button
+        document.getElementById('loginButton').addEventListener('click', oauth2SignIn);
+
+        // Handle Redirect beim Laden der Seite
+        window.onload = handleRedirect;
     </script>
 </body>
-
 </html>
