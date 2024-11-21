@@ -111,8 +111,8 @@
         }
 
         // Funktion zum Löschen von Kommentaren
-        function deleteComment(accessToken) {
-
+        function deleteComment() {
+            const accessToken = localStorage.getItem("access_token");
             const commentId = prompt("Gib die Kommentar ID ein:");// Gib die ID des Kommentars an
 
             fetch(`https://www.googleapis.com/youtube/v3/comments?id=${commentId}`, {
