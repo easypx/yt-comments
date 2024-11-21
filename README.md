@@ -1,3 +1,3 @@
-# yt-comments
-Manage YouTube comments (Show, Delete)
+# YT-Comments
+Manage your own YouTube comments under a video (Show, Delete)
 
