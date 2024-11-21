@@ -68,7 +68,7 @@
                 // Entferne den Fragment-Teil aus der URL
                 window.location.hash = '';
 
-                alert("Login erfolgreich!");
+                alert("Login erfolgreich! 😀");
             }
         }
 
@@ -148,7 +148,9 @@
                         });
                     }
                 })
-                .catch(error => { console.error('Fehler bei API-Aufruf:', error); alert(`Fehler bei API-Aufruf: ${error.message || error}`); });
+                .catch(error => {
+                    console.error('Fehler bei API-Aufruf:', error); alert(`Fehler bei API-Aufruf: ${error.message || error} 😖`);
+                });
         }
 
 
