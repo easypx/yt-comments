@@ -10,6 +10,7 @@
 
 <body>
     <button id="loginButton">Login mit Google</button>
+    <button id="getCommentsButton">Get Comments</button>
     <button id="deleteButton">Delete Comment</button>
     <div id="output"></div>
     <script>
@@ -67,13 +68,14 @@
                 window.location.hash = '';
 
                 // Rufe die YouTube API auf
-                fetchComments(accessToken);
+                //fetchComments(accessToken);
             }
         }
 
         // Funktion zum Abrufen von Kommentaren
-        function fetchComments(accessToken) {
-            const videoId = YOUR_VIDEO_ID; // Gib die ID des Videos an
+        function fetchComments() {
+            const accessToken = localStorage.getItem("access_token");
+            const videoId = prompt("Gib die Video-ID ein:"); // Gib die ID des Videos an
 
             fetch(`https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=${videoId}`, {
                 headers: {
@@ -93,7 +95,7 @@
                 .catch(error => console.error('Fehler bei API-Aufruf:', error));
         }
 
-        // Funktion zum Anzeigen der Kommentare
+        /// Funktion zum Anzeigen der Kommentare mit IDs
         function displayComments(data) {
             const output = document.getElementById('output');
             output.innerHTML = ''; // Vorherigen Inhalt löschen
@@ -102,9 +104,14 @@
                 data.items.forEach(item => {
                     const comment = item.snippet.topLevelComment.snippet.textDisplay;
                     const author = item.snippet.topLevelComment.snippet.authorDisplayName;
+                    const commentId = item.snippet.topLevelComment.id; // Kommentar-ID
 
                     const commentDiv = document.createElement('div');
-                    commentDiv.innerHTML = `<p><strong>${author}:</strong> ${comment}</p>`;
+                    commentDiv.innerHTML = `
+                <p><strong>${author}:</strong> ${comment}</p>
+                <p><em>Kommentar-ID:</em> ${commentId}</p>
+                <hr>
+            `;
                     output.appendChild(commentDiv);
                 });
             } else {
@@ -153,6 +160,7 @@
 
         // Ereignislistener für Buttons
         document.getElementById('loginButton').addEventListener('click', oauth2SignIn);
+        document.getElementById('getCommentsButton').addEventListener('click', fetchComments);
         document.getElementById('deleteButton').addEventListener('click', deleteComment);
 
         // Handle Redirect beim Laden der Seite
