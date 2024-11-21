@@ -144,6 +144,7 @@
                         // Fehler behandeln, wenn der Status nicht 204 ist
                         return response.json().then(err => {
                             throw new Error(`API-Fehler: ${response.status} - ${err.error.message}`);
+                            alert(`API-Fehler: ${response.status} - ${err.error.message}`);
                         });
                     }
                 })
