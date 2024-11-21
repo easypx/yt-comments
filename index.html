@@ -9,6 +9,7 @@
 </head>
 
 <body>
+    <h1>YouTube API OAuth2 Example - Show and Delete comments</h1>
     <button id="loginButton">Login mit Google</button>
     <button id="getCommentsButton">Get Comments</button>
     <button id="deleteButton">Delete Comment</button>
@@ -74,7 +75,7 @@
         // Funktion zum Abrufen von Kommentaren
         function fetchComments() {
             const accessToken = localStorage.getItem("access_token");
-            const videoId = prompt("Gib die Video-ID ein:"); // Gib die ID des Videos an
+            const videoId = prompt("Gib die Video-ID ein:", 'yPJuVLc5Jk4'); // Gib die ID des Videos an
 
             fetch(`https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=${videoId}`, {
                 headers: {
@@ -147,7 +148,7 @@
                         });
                     }
                 })
-                .catch(error => { console.error('Fehler bei API-Aufruf:', error); alert('Fehler bei API-Aufruf: ' + error.message); });
+                .catch(error => { console.error('Fehler bei API-Aufruf:', error); alert(`Fehler bei API-Aufruf: ${error.message || error}`); });
         }
 
 
