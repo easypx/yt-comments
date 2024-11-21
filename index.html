@@ -10,6 +10,72 @@
 <body>
 
     <script>
+        const YOUR_CLIENT_ID = '494753670710-1bdnjbifije3cckvbmm29lv9n9okh9qt.apps.googleusercontent.com';
+        const YOUR_REDIRECT_URI = 'https://easypx.github.io/yt-comments';
+        const YOUR_VIDEO_ID = 'yPJuVLc5Jk4';
+
+        function oauth2SignIn() {
+            const oauth2Endpoint = 'https://accounts.google.com/o/oauth2/v2/auth';
+
+            const state = generateCryptoRandomState();
+            localStorage.setItem('state', state);
+
+            const params = {
+                client_id: YOUR_CLIENT_ID,
+                redirect_uri: YOUR_REDIRECT_URI, // Muss mit den OAuth-Einstellungen übereinstimmen
+                response_type: 'token',
+                scope: 'https://www.googleapis.com/auth/youtube.force-ssl',
+                state: state,
+                include_granted_scopes: 'true',
+            };
+
+            const queryString = new URLSearchParams(params).toString();
+            const authUrl = `${oauth2Endpoint}?${queryString}`;
+
+            window.location.href = authUrl;
+        }
+        function handleRedirect() {
+            const fragment = window.location.hash.substring(1); // Entfernt das `#`
+            const params = new URLSearchParams(fragment);
+
+            if (params.has('access_token')) {
+                const accessToken = params.get('access_token');
+                const state = params.get('state');
+
+                // Überprüfe den State auf mögliche CSRF-Angriffe
+                if (state !== localStorage.getItem('state')) {
+                    console.error('State mismatch, CSRF attack detected!');
+                    return;
+                }
+
+                // Speichere den Token im LocalStorage oder direkt im Speicher
+                localStorage.setItem('access_token', accessToken);
+                console.log('Access Token gespeichert:', accessToken);
+                
+                // Entferne den Fragment-Teil aus der URL nach dem Login
+                window.location.hash = '';
+
+                // Rufe die YouTube API auf
+                fetchComments(accessToken);
+            }
+        }
+        function fetchComments(accessToken) {
+            const videoId = YOUR_VIDEO_ID; // Gib die ID des Videos an
+
+            fetch(`https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=${videoId}`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Kommentare:', data);
+                })
+                .catch(error => console.error('Fehler bei API-Aufruf:', error));
+        }
+        <button onclick="oauth2SignIn()">Login mit Google</button>
+        window.onload = handleRedirect;
 
     </script>
 </body>
