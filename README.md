@@ -1,2 +1,3 @@
 # yt-comments
-Manage YouTube comments
+Manage YouTube comments (Show, Delete)
+
