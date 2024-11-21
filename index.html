@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YouTube API OAuth2 Example</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
 </head>
+
 <body>
     <button id="loginButton">Login mit Google</button>
     <button id="deleteButton">Delete Comment</button>
@@ -113,7 +115,12 @@
         // Funktion zum Löschen von Kommentaren
         function deleteComment() {
             const accessToken = localStorage.getItem("access_token");
-            const commentId = prompt("Gib die Kommentar ID ein:");// Gib die ID des Kommentars an
+            const commentId = prompt("Gib die Kommentar-ID ein:"); // Gib die ID des Kommentars an
+
+            if (!commentId) {
+                console.error("Keine Kommentar-ID angegeben.");
+                return;
+            }
 
             fetch(`https://www.googleapis.com/youtube/v3/comments?id=${commentId}`, {
                 method: "DELETE",
@@ -123,17 +130,19 @@
                 },
             })
                 .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`API-Fehler: ${response.status}`);
+                    if (response.status === 204) {
+                        // Kommentar erfolgreich gelöscht
+                        console.log("Kommentar erfolgreich gelöscht!");
+                    } else {
+                        // Fehler behandeln, wenn der Status nicht 204 ist
+                        return response.json().then(err => {
+                            throw new Error(`API-Fehler: ${response.status} - ${err.error.message}`);
+                        });
                     }
-                    return response.json();
-                })
-                .then(data => {
-                    displayComments(data);
-                    console.log("Kommentar gelöscht!");
                 })
                 .catch(error => console.error('Fehler bei API-Aufruf:', error));
         }
+
 
         // Generiere einen zufälligen State-Wert
         function generateCryptoRandomState() {
@@ -150,4 +159,5 @@
         window.onload = handleRedirect;
     </script>
 </body>
+
 </html>
