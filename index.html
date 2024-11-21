@@ -8,6 +8,7 @@
 </head>
 
 <body>
+    <button onclick="oauth2SignIn()">Login mit Google</button>
 
     <script>
         const YOUR_CLIENT_ID = '494753670710-1bdnjbifije3cckvbmm29lv9n9okh9qt.apps.googleusercontent.com';
@@ -51,7 +52,7 @@
                 // Speichere den Token im LocalStorage oder direkt im Speicher
                 localStorage.setItem('access_token', accessToken);
                 console.log('Access Token gespeichert:', accessToken);
-                
+
                 // Entferne den Fragment-Teil aus der URL nach dem Login
                 window.location.hash = '';
 
@@ -74,7 +75,6 @@
                 })
                 .catch(error => console.error('Fehler bei API-Aufruf:', error));
         }
-        <button onclick="oauth2SignIn()">Login mit Google</button>
         window.onload = handleRedirect;
 
     </script>
