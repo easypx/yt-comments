@@ -67,8 +67,7 @@
                 // Entferne den Fragment-Teil aus der URL
                 window.location.hash = '';
 
-                // Rufe die YouTube API auf
-                //fetchComments(accessToken);
+                alert("Login erfolgreich!");
             }
         }
 
@@ -148,7 +147,7 @@
                         });
                     }
                 })
-                .catch(error => console.error('Fehler bei API-Aufruf:', error));
+                .catch(error => { console.error('Fehler bei API-Aufruf:', error); alert('Fehler bei API-Aufruf:', error); });
         }
 
 
