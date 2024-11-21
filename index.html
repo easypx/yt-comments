@@ -147,7 +147,7 @@
                         });
                     }
                 })
-                .catch(error => { console.error('Fehler bei API-Aufruf:', error); alert('Fehler bei API-Aufruf:', error); });
+                .catch(error => { console.error('Fehler bei API-Aufruf:', error); alert('Fehler bei API-Aufruf: ' + error.message); });
         }
 
 
