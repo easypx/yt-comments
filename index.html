@@ -8,6 +8,7 @@
 </head>
 <body>
     <button id="loginButton">Login mit Google</button>
+    <button id="deleteButton">Delete Comment</button>
     <div id="output"></div>
     <script>
         const YOUR_CLIENT_ID = '494753670710-1bdnjbifije3cckvbmm29lv9n9okh9qt.apps.googleusercontent.com'; // Ersetze durch deine Client-ID
@@ -110,8 +111,8 @@
         }
 
         // Funktion zum Löschen von Kommentaren
-        function deleteComments(accessToken) {
-            
+        function deleteComment(accessToken) {
+
             const commentId = prompt("Gib die Kommentar ID ein:");// Gib die ID des Kommentars an
 
             fetch(`https://www.googleapis.com/youtube/v3/comments?id=${commentId}`, {
@@ -140,8 +141,9 @@
             return Array.from(randomValues, byte => byte.toString(16).padStart(2, '0')).join('');
         }
 
-        // Ereignislistener für den Login-Button
+        // Ereignislistener für Buttons
         document.getElementById('loginButton').addEventListener('click', oauth2SignIn);
+        document.getElementById('deleteButton').addEventListener('click', deleteComment);
 
         // Handle Redirect beim Laden der Seite
         window.onload = handleRedirect;
