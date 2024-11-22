@@ -92,6 +92,8 @@
 
         // Funktion zum Verarbeiten der Redirect-Daten
         function handleRedirect() {
+            const responseURL = window.location.href;
+            console.log('Response URL: ', responseURL);
             const fragment = window.location.hash.substring(1); // Entfernt das `#` aus der URL
             const params = new URLSearchParams(fragment);
 
