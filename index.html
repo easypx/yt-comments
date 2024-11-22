@@ -31,6 +31,14 @@
     <button id="getCommentsButton">Get Comments</button>
     <button id="deleteButton">Delete Comment</button>
     <div id="output"></div>
+    <div id="cookie-banner" style="position: fixed; bottom: 0; left: 0; width: 100%; background-color: rgba(0, 0, 0, 0.8); color: white; text-align: center; padding: 10px;">
+  <p>Wir verwenden Cookies, um die Benutzererfahrung zu verbessern. Durch die Nutzung unserer Website stimmen Sie der Verwendung von Cookies zu. 
+    <a href="/privacy-policy" style="color: #f1f1f1;">Mehr erfahren</a>
+  </p>
+  <button id="accept-cookies" style="padding: 10px; background-color: #28a745; color: white; border: none; cursor: pointer;">Akzeptieren</button>
+  <button id="decline-cookies" style="padding: 10px; background-color: #dc3545; color: white; border: none; cursor: pointer;">Ablehnen</button>
+</div>
+
     
     <a href="https://easypx.github.io/yt-comments/datenschutzerklärung.html">Datenschutzerklärung</a>
     <a href="https://easypx.github.io/yt-comments/nutzungsbedingungen.html">Nutzungsbedingungen</a>
@@ -189,6 +197,38 @@
 
         // Handle Redirect beim Laden der Seite
         window.onload = handleRedirect;
+
+        // Überprüfen, ob der Benutzer bereits zugestimmt hat
+document.addEventListener("DOMContentLoaded", function () {
+  if (!localStorage.getItem('cookieConsent')) {
+    document.getElementById('cookie-banner').style.display = 'block';
+  } else {
+    // Cookies sind bereits zugestimmt, setze Cookies
+    initializeCookies();
+  }
+
+  document.getElementById('accept-cookies').addEventListener('click', function () {
+    localStorage.setItem('cookieConsent', 'true');
+    document.getElementById('cookie-banner').style.display = 'none';
+    initializeCookies();
+  });
+
+  document.getElementById('decline-cookies').addEventListener('click', function () {
+    localStorage.setItem('cookieConsent', 'false');
+    document.getElementById('cookie-banner').style.display = 'none';
+  });
+});
+
+// Funktion zum Setzen der Cookies, wenn der Benutzer zugestimmt hat
+function initializeCookies() {
+  if (localStorage.getItem('cookieConsent') === 'true') {
+    // Beispiel: Setze Google Analytics Cookie
+    gtag('config', 'MEASUREMENT_ID', {
+      'cookie_flags': 'SameSite=None;Secure'
+    });
+  }
+}
+
     </script>
 </body>
 
