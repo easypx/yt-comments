@@ -64,7 +64,7 @@
         <button id="decline-cookies" class="w3-button w3-red">Ablehnen</button>
     </div>
     <script>
-        const YOUR_CLIENT_ID = '494753670710-1bdnjbifije3cckvbmm29lv9n9okh9qt.apps.googleusercontent.com'; // Ersetze durch deine Client-ID
+        //const YOUR_CLIENT_ID = ''; // Ersetze durch deine Client-ID
         //const YOUR_REDIRECT_URI = window.location.origin; // Aktuelle Seite als Redirect-URI
         const YOUR_REDIRECT_URI = 'https://easypx.github.io/yt-comments';
         const YOUR_VIDEO_ID = 'yPJuVLc5Jk4'; // Ersetze durch die Video-ID, von der du Kommentare abrufen möchtest
@@ -74,6 +74,7 @@
         // Funktion für den Login und die OAuth2-Umleitung
         function oauth2SignIn() {
             const oauth2Endpoint = 'https://accounts.google.com/o/oauth2/v2/auth';
+            const YOUR_CLIENT_ID = prompt("Gib deine OAuth Client ID ein:"); // 
 
             // Generiere einen zufälligen State-Wert, um CSRF zu verhindern
             const state = generateCryptoRandomState();
