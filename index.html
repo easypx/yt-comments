@@ -11,7 +11,7 @@
         gtag('js', new Date());
 
         gtag('config', 'G-92LBS42YPS', {
-          cookie_flags: 'SameSite=None;Secure'
+            cookie_flags: 'SameSite=None;Secure'
         });
 
     </script>
@@ -24,6 +24,15 @@
 </head>
 
 <body>
+    <!-- Google Identity Services Library -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <!-- Google Login Button -->
+    <div id="g_id_onload" data-client_id="494753670710-1bdnjbifije3cckvbmm29lv9n9okh9qt.apps.googleusercontent.com"
+        data-callback="handleCredentialResponse" data-scope="https://www.googleapis.com/auth/youtube.force-ssl">
+    </div>
+    <div class="g_id_signin" data-type="standard"></div>
+
     <img src="images/klangraum_logo.png" alt="klangraum logo">
     <h1>YouTube API OAuth2 Example - Show and Delete comments</h1>
     <p>This app will use www.googleapis.com/auth/youtube.force-ssl to show user's own YouTube comments under a video
@@ -236,6 +245,13 @@
             handleRedirect(); // Stelle sicher, dass der Redirect nach der Cookie-Logik aufgerufen wird
         };
 
+        // Wird nach erfolgreichem Login aufgerufen
+        function handleCredentialResponse(response) {
+            idToken = response.credential;
+            console.log("Logged in. ID Token: ", idToken);
+            // Lade Kommentare
+            //fetchCommentThreads();
+        }
 
     </script>
 </body>
