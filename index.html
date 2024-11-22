@@ -24,14 +24,14 @@
 </head>
 
 <body>
-    <!-- Google Identity Services Library -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <!-- Google Identity Services Library 
+    <script src="https://accounts.google.com/gsi/client" async defer></script>-->
 
-    <!-- Google Login Button -->
+    <!-- Google Login Button 
     <div id="g_id_onload" data-client_id="494753670710-1bdnjbifije3cckvbmm29lv9n9okh9qt.apps.googleusercontent.com"
         data-callback="handleCredentialResponse" data-scope="https://www.googleapis.com/auth/youtube.force-ssl">
     </div>
-    <div class="g_id_signin" data-type="standard"></div>
+    <div class="g_id_signin" data-type="standard"></div>-->
 
     <img src="images/klangraum_logo.png" alt="klangraum logo">
     <h1>YouTube API OAuth2 Example - Show and Delete comments</h1>
@@ -246,12 +246,12 @@
         };
 
         // Wird nach erfolgreichem Login aufgerufen
-        function handleCredentialResponse(response) {
+        /*function handleCredentialResponse(response) {
             idToken = response.credential;
             console.log("Logged in. ID Token: ", idToken);
             // Lade Kommentare
             //fetchCommentThreads();
-        }
+        }*/
 
     </script>
 </body>
