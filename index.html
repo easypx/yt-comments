@@ -246,13 +246,21 @@
         document.getElementById('deleteButton').addEventListener('click', deleteComment);
 
         document.addEventListener("DOMContentLoaded", function () {
-            if (localStorage.getItem('cookieConsent') === 'true') {
+            const consent = localStorage.getItem('cookieConsent');
+
+            if (consent === 'true') {
+                // Zustimmung gegeben, Cookie-Banner ausblenden und Cookies initialisieren
                 document.getElementById('cookie-banner').style.display = 'none';
                 initializeCookies();
+            } else if (consent === 'false') {
+                // Zustimmung abgelehnt, Cookie-Banner ausblenden
+                document.getElementById('cookie-banner').style.display = 'none';
             } else {
+                // Zustimmung wurde noch nicht abgefragt, Cookie-Banner anzeigen
                 document.getElementById('cookie-banner').style.display = 'block';
             }
 
+            // Event-Listener für die Buttons
             document.getElementById('accept-cookies').addEventListener('click', function () {
                 localStorage.setItem('cookieConsent', 'true');
                 document.getElementById('cookie-banner').style.display = 'none';
@@ -264,6 +272,7 @@
                 document.getElementById('cookie-banner').style.display = 'none';
             });
         });
+
 
         // Die Cookies initialisieren, wenn der Benutzer zugestimmt hat
         function initializeCookies() {
