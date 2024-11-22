@@ -98,6 +98,7 @@
 
             // Umleitung zur Google-Anmeldeseite
             window.location.href = authUrl;
+            handleRedirect();
         }
 
         // Funktion zum Verarbeiten der Redirect-Daten
@@ -278,9 +279,9 @@
         }
 
         // Optional: Nur um sicherzustellen, dass keine Konflikte mit anderen logischen Operationen bestehen
-        window.onload = function () {
+        /*window.onload = function () {
             handleRedirect(); // Stelle sicher, dass der Redirect nach der Cookie-Logik aufgerufen wird
-        };
+        };*/
 
         // Wird nach erfolgreichem Login aufgerufen
         /*function handleCredentialResponse(response) {
