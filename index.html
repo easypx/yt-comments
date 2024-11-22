@@ -77,10 +77,8 @@
 
             // Generiere einen zufälligen State-Wert, um CSRF zu verhindern
             const state = generateCryptoRandomState();
-            if (localStorage.getItem('cookieConsent')) {
-                localStorage.setItem('state', state);
-            } else { tempState = state; }
 
+            localStorage.setItem('state', state);
 
             // OAuth2-Parameter
             const params = {
@@ -115,17 +113,10 @@
                 const state = params.get('state');
 
                 // Überprüfe den State zur Vermeidung von CSRF-Angriffen
-                if (localStorage.getItem('cookieConsent')) {
-                    if (state !== localStorage.getItem('state')) {
-                        console.error('State mismatch! CSRF attack detected.');
-                        return;
-                    }
-                }
-                else {
-                    if (state !== tempState) {
-                        console.warn("Can't compare state value due to missing cookies consent. CSRF attack might be possible.");
-                        //return;
-                    }
+
+                if (state !== localStorage.getItem('state')) {
+                    console.error('State mismatch! CSRF attack detected.');
+                    return;
                 }
 
                 // Speichere den Access Token im LocalStorage
