@@ -237,12 +237,11 @@
         document.getElementById('deleteButton').addEventListener('click', deleteComment);
 
         document.addEventListener("DOMContentLoaded", function () {
-            // Cookie-Zustimmung prüfen
-            if (!localStorage.getItem('cookieConsent')) {
-                document.getElementById('cookie-banner').style.display = 'block';
-            } else {
+            if (localStorage.getItem('cookieConsent') === 'true') {
                 document.getElementById('cookie-banner').style.display = 'none';
                 initializeCookies();
+            } else {
+                document.getElementById('cookie-banner').style.display = 'block';
             }
 
             document.getElementById('accept-cookies').addEventListener('click', function () {
