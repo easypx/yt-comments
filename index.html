@@ -138,10 +138,14 @@
 
         // Funktion zum Abrufen von Kommentaren
         function fetchComments() {
-            if (localStorage.getItem('cookieConsent') === 'true') {
-                const accessToken = localStorage.getItem("access_token");
-            } else { const accessToken = tempAccessToken; }
-            console.log("tempAccessToken: ", tempAccessToken)
+            const accessToken = localStorage.getItem('cookieConsent') === 'true'
+                ? localStorage.getItem("access_token")
+                : tempAccessToken;
+
+            if (!accessToken) {
+                alert('Bitte zuerst einloggen.');
+                return;
+            }
 
             const videoId = prompt("Gib die Video-ID ein:", 'VUr1gRWK7xo'); // Gib die ID des Videos an
 
@@ -189,9 +193,14 @@
 
         // Funktion zum Löschen von Kommentaren
         function deleteComment() {
-            if (localStorage.getItem('cookieConsent') === 'true') {
-                const accessToken = localStorage.getItem("access_token");
-            } else { const accessToken = tempAccessToken; }
+            const accessToken = localStorage.getItem('cookieConsent') === 'true'
+                ? localStorage.getItem("access_token")
+                : tempAccessToken;
+
+            if (!accessToken) {
+                alert('Bitte zuerst einloggen.');
+                return;
+            }
             const commentId = prompt("Gib die Kommentar-ID ein:"); // Gib die ID des Kommentars an
 
             if (!commentId) {
