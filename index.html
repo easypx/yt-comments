@@ -141,6 +141,7 @@
             if (localStorage.getItem('cookieConsent')) {
                 const accessToken = localStorage.getItem("access_token");
             } else { const accessToken = tempAccessToken; }
+            console.log("tempAccessToken. ", tempAccessToken)
 
             const videoId = prompt("Gib die Video-ID ein:", 'VUr1gRWK7xo'); // Gib die ID des Videos an
 
