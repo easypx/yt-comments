@@ -21,6 +21,7 @@
     <meta name="google-site-verification" content="-5PrRLkNTW6t6yGAuBN2tFbrEb-NaZDS8VZuhO1M7hM" />
     <title>YouTube API OAuth2 Example</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 
 <body>
@@ -33,15 +34,19 @@
     </div>
     <div class="g_id_signin" data-type="standard"></div>-->
 
-    <img src="images/klangraum_logo.png" alt="klangraum logo">
-    <h1>YouTube API OAuth2 Example - Show and Delete comments</h1>
-    <p>This app will use www.googleapis.com/auth/youtube.force-ssl to show user's own YouTube comments under a video
-        (filtered out of thousands) on the screen of the app, so that users can delete their comments throug the app and
-        sync the changes to YouTube. In this state the app is limited to show and delete comments.</p>
-    <button id="loginButton">Login mit Google</button>
-    <button id="getCommentsButton">Get Comments</button>
-    <button id="deleteButton">Delete Comment</button>
-    <div id="output"></div>
+    <header class="w3-container w3-teal">
+        <h1>YouTube API OAuth2 Example - Show and Delete comments</h1>
+    </header>
+    <div class="w3-container">
+        <p>This app will use www.googleapis.com/auth/youtube.force-ssl to show user's own YouTube comments under a video
+            (filtered out of thousands) on the screen of the app, so that users can delete their comments throug the app
+            and
+            sync the changes to YouTube. In this state the app is limited to show and delete comments.</p>
+        <button id="loginButton" class="w3-button w3-green">Login mit Google</button>
+        <button id="getCommentsButton" class="w3-button w3-blue">Get Comments</button>
+        <button id="deleteButton" class="w3-button w3-red">Delete Comment</button>
+        <div id="output"></div>
+    </div>
     <div id="cookie-banner"
         style="position: fixed; bottom: 0; left: 0; width: 100%; background-color: rgba(0, 0, 0, 0.8); color: white; text-align: center; padding: 10px;">
         <p>Wir verwenden Cookies, um die Benutzererfahrung zu verbessern. Durch die Nutzung unserer Website stimmen Sie
@@ -54,10 +59,13 @@
             style="padding: 10px; background-color: #dc3545; color: white; border: none; cursor: pointer;">Ablehnen</button>
     </div>
 
-
-    <a href="https://easypx.github.io/yt-comments/datenschutzerklärung.html">Datenschutzerklärung</a>
-    <a href="https://easypx.github.io/yt-comments/nutzungsbedingungen.html">Nutzungsbedingungen</a>
-
+    <footer class="w3-container w3-teal" style="position: fixed; bottom: 0;width: 100%;">
+        <p>
+            <a href="https://easypx.github.io/yt-comments/datenschutzerklärung.html">Datenschutzerklärung</a>
+            <a href="https://easypx.github.io/yt-comments/nutzungsbedingungen.html">Nutzungsbedingungen</a>
+            <!--<img src="images/klangraum_logo.png" alt="klangraum logo">-->
+        </p>
+    </footer>
     <script>
         const YOUR_CLIENT_ID = '494753670710-1bdnjbifije3cckvbmm29lv9n9okh9qt.apps.googleusercontent.com'; // Ersetze durch deine Client-ID
         //const YOUR_REDIRECT_URI = window.location.origin; // Aktuelle Seite als Redirect-URI
