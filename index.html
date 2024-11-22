@@ -6,13 +6,13 @@
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-92LBS42YPS"></script>
     <script>
-        window.dataLayer = window.dataLayer || [];
+        /*window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
 
         gtag('config', 'G-92LBS42YPS', {
             cookie_flags: 'SameSite=None;Secure'
-        });
+        });*/
 
     </script>
 
@@ -54,7 +54,8 @@
             <!--<img src="images/klangraum_logo.png" alt="klangraum logo">-->
         </p>
     </footer>
-    <div id="cookie-banner" class="w3-panel w3-black" style="text-align: center; padding-bottom: 20px;position: fixed; bottom: 0;width: 100%;">
+    <div id="cookie-banner" class="w3-panel w3-brown"
+        style="text-align: center; padding-bottom: 20px;position: fixed; bottom: 0;width: 100%;">
         <p>Wir verwenden Cookies, um die Benutzererfahrung zu verbessern. Durch die Nutzung unserer Website stimmen Sie
             der Verwendung von Cookies zu.
             <a href="datenschutzerklärung.html" style="color: #f1f1f1;">Mehr erfahren</a>
@@ -67,6 +68,8 @@
         //const YOUR_REDIRECT_URI = window.location.origin; // Aktuelle Seite als Redirect-URI
         const YOUR_REDIRECT_URI = 'https://easypx.github.io/yt-comments';
         const YOUR_VIDEO_ID = 'yPJuVLc5Jk4'; // Ersetze durch die Video-ID, von der du Kommentare abrufen möchtest
+        let tempState = ""; // falls Cookies abgelehnt werden
+        let tempAccessToken = ""; // falls Cookies abgelehnt werden
 
         // Funktion für den Login und die OAuth2-Umleitung
         function oauth2SignIn() {
@@ -74,7 +77,10 @@
 
             // Generiere einen zufälligen State-Wert, um CSRF zu verhindern
             const state = generateCryptoRandomState();
-            localStorage.setItem('state', state);
+            if (localStorage.getItem('cookieConsent')) {
+                localStorage.setItem('state', state);
+            } else { tempState = state; }
+
 
             // OAuth2-Parameter
             const params = {
@@ -106,14 +112,28 @@
                 const state = params.get('state');
 
                 // Überprüfe den State zur Vermeidung von CSRF-Angriffen
-                if (state !== localStorage.getItem('state')) {
-                    console.error('State mismatch! CSRF attack detected.');
-                    return;
+                if (localStorage.getItem('cookieConsent')) {
+                    if (state !== localStorage.getItem('state')) {
+                        console.error('State mismatch! CSRF attack detected.');
+                        return;
+                    }
+                }
+                else {
+                    if (state !== tempState) {
+                        console.error('State mismatch! CSRF attack detected.');
+                        return;
+                    }
                 }
 
                 // Speichere den Access Token im LocalStorage
-                localStorage.setItem('access_token', accessToken);
-                console.log('Access Token gespeichert:', accessToken);
+                if (localStorage.getItem('cookieConsent')) {
+                    localStorage.setItem('access_token', accessToken);
+                    console.log('Access Token gespeichert:', accessToken);
+                }
+                else {
+                    tempAccessToken = accessToken;
+                    console.log('Access Token nur temporär gespeichert:', accessToken);
+                }
 
                 // Entferne den Fragment-Teil aus der URL
                 window.location.hash = '';
@@ -124,7 +144,10 @@
 
         // Funktion zum Abrufen von Kommentaren
         function fetchComments() {
-            const accessToken = localStorage.getItem("access_token");
+            if (localStorage.getItem('cookieConsent')) {
+                const accessToken = localStorage.getItem("access_token");
+            } else { const accessToken = tempAccessToken; }
+
             const videoId = prompt("Gib die Video-ID ein:", 'VUr1gRWK7xo'); // Gib die ID des Videos an
 
             fetch(`https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=${videoId}`, {
@@ -171,7 +194,9 @@
 
         // Funktion zum Löschen von Kommentaren
         function deleteComment() {
-            const accessToken = localStorage.getItem("access_token");
+            if (localStorage.getItem('cookieConsent')) {
+                const accessToken = localStorage.getItem("access_token");
+            } else { const accessToken = tempAccessToken; }
             const commentId = prompt("Gib die Kommentar-ID ein:"); // Gib die ID des Kommentars an
 
             if (!commentId) {
@@ -240,9 +265,15 @@
         // Die Cookies initialisieren, wenn der Benutzer zugestimmt hat
         function initializeCookies() {
             if (localStorage.getItem('cookieConsent') === 'true') {
-                /*gtag('config', 'G-92LBS42YPS', {
+
+                // Google Analytics
+                window.dataLayer = window.dataLayer || [];
+                function gtag() { dataLayer.push(arguments); }
+                gtag('js', new Date());
+
+                gtag('config', 'G-92LBS42YPS', {
                     cookie_flags: 'SameSite=None;Secure'
-                });*/
+                });
             }
         }
 
