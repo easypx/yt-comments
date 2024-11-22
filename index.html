@@ -92,7 +92,7 @@
         // Funktion zum Abrufen von Kommentaren
         function fetchComments() {
             const accessToken = localStorage.getItem("access_token");
-            const videoId = prompt("Gib die Video-ID ein:", 'yPJuVLc5Jk4'); // Gib die ID des Videos an
+            const videoId = prompt("Gib die Video-ID ein:", 'VUr1gRWK7xo'); // Gib die ID des Videos an
 
             fetch(`https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=${videoId}`, {
                 headers: {
