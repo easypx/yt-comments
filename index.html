@@ -202,7 +202,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   if (!localStorage.getItem('cookieConsent')) {
     document.getElementById('cookie-banner').style.display = 'block';
-  } else {
+  } else if(localStorage.getItem('cookieConsent')){
     // Cookies sind bereits zugestimmt, setze Cookies
     initializeCookies();
   }
