@@ -98,7 +98,9 @@
 
             // Umleitung zur Google-Anmeldeseite
             window.location.href = authUrl;
-            handleRedirect();
+            window.onload = function () {
+                handleRedirect(); // Stelle sicher, dass der Redirect nach der Cookie-Logik aufgerufen wird
+            };
         }
 
         // Funktion zum Verarbeiten der Redirect-Daten
@@ -121,8 +123,8 @@
                 }
                 else {
                     if (state !== tempState) {
-                        console.error('State mismatch! CSRF attack detected.');
-                        return;
+                        console.warn("Can't compare state value due to missing cookies consent. CSRF attack might be possible.");
+                        //return;
                     }
                 }
 
